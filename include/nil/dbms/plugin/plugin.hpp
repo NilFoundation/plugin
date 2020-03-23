@@ -19,9 +19,9 @@
 #define DBMS_PLUGIN_HPP
 
 namespace nil {
-namespace dbms {
-class plugin {};
-} // namespace dbms
-} // namespace nil
+    namespace dbms {
+        class plugin {};
+    }    // namespace dbms
+}    // namespace nil
 
-#endif // DBMS_PLUGIN_HPP
+#endif    // DBMS_PLUGIN_HPP

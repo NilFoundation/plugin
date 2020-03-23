@@ -1,5 +1,7 @@
-# Nil DBMS Storage Engine Development Kit
+# =nil; Database Management System Plugin Development Kit
 
-This repository contains the interfaces for the Nil DBMS storage engine development.
+This repository contains the interfaces for the =nil; Database Management System plugin development.
 
-Engines intended to be used in Nil DBMS should be compatible with the interfaces this repository proposes because of the DBMS itself uses such an SDK to use storage engines.
+Plugins intended to be used in =nil; Database Management System should be compatible with the interfaces this
+ repository
+ proposes because of the Database Management System itself uses such a plugin interface.
