@@ -41,9 +41,7 @@ macro(define_storage_test name)
                                TRUE>:BOOST_TEST_DYN_LINK>)
 endmacro()
 
-set(TESTS_NAMES
-    "engine"
-    )
+set(TESTS_NAMES "plugin")
 
 foreach(TEST_NAME ${TESTS_NAMES})
     define_storage_test(${TEST_NAME})

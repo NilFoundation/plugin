@@ -15,12 +15,13 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#define BOOST_TEST_MODULE storage_test
+#ifndef DBMS_PLUGIN_HPP
+#define DBMS_PLUGIN_HPP
 
-#include <boost/test/data/monomorphic.hpp>
-#include <boost/test/data/test_case.hpp>
-#include <boost/test/unit_test.hpp>
+namespace nil {
+namespace dbms {
+class plugin {};
+} // namespace dbms
+} // namespace nil
 
-BOOST_AUTO_TEST_SUITE(storage_test_suite)
-
-BOOST_AUTO_TEST_SUITE_END()
+#endif // DBMS_PLUGIN_HPP
