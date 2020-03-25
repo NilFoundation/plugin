@@ -43,14 +43,17 @@ cm_find_package(CM)
 include(CMDeploy)
 include(CMSetupVersion)
 
+if(NOT Boost_FOUND)
+    cm_find_package(Boost COMPONENTS program_options)
+endif()
+
 cm_project(plugin WORKSPACE_NAME ${CMAKE_WORKSPACE_NAME})
 
 option(BUILD_DOXYGEN_DOCS "Build with configuring Doxygen documentation compiler" TRUE)
 
 set(DOXYGEN_OUTPUT_DIR "${CMAKE_CURRENT_LIST_DIR}/docs" CACHE STRING "Specify doxygen output directory")
 
-list(APPEND ${CURRENT_PROJECT_NAME}_PUBLIC_HEADERS
-     )
+list(APPEND ${CURRENT_PROJECT_NAME}_PUBLIC_HEADERS)
 
 list(APPEND ${CURRENT_PROJECT_NAME}_UNGROUPED_SOURCES)
 
@@ -78,11 +81,13 @@ target_include_directories(${CMAKE_WORKSPACE_NAME}_${CURRENT_PROJECT_NAME} INTER
 
                            ${Boost_INCLUDE_DIRS})
 
-cm_deploy(TARGETS ${CMAKE_WORKSPACE_NAME}_${CURRENT_PROJECT_NAME} INCLUDE include NAMESPACE ${CMAKE_WORKSPACE_NAME}::)
+cm_deploy(TARGETS ${CMAKE_WORKSPACE_NAME}_${CURRENT_PROJECT_NAME}
+          INCLUDE include
+          NAMESPACE ${CMAKE_WORKSPACE_NAME}::)
 
 if(BUILD_TESTS)
     add_subdirectory(test)
 endif()
 
-configure_file(${CMAKE_CURRENT_LIST_DIR}/docs/doxygen/engine.doxyfile.in
-               ${CMAKE_BINARY_DIR}/engine.doxyfile @ONLY)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/docs/doxygen/plugin.doxyfile.in
+               ${CMAKE_BINARY_DIR}/plugin.doxyfile @ONLY)
