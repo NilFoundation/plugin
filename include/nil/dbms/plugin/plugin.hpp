@@ -19,6 +19,7 @@
 #define DBMS_BASIC_PLUGIN_HPP
 
 #include <boost/config.hpp>
+#include <boost/application.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/variables_map.hpp>
 
@@ -42,7 +43,8 @@ namespace nil {
                 virtual const std::string &name() const = 0;
                 virtual void set_program_options(boost::program_options::options_description &cli,
                                                  boost::program_options::options_description &cfg) = 0;
-                virtual void initialize(const boost::program_options::variables_map &options) = 0;
+                virtual void initialize(boost::application::global_context_ptr ctx,
+                                        const boost::program_options::variables_map &options) = 0;
                 virtual void handle_sighup() = 0;
                 virtual void startup() = 0;
                 virtual void shutdown() = 0;
