@@ -15,13 +15,12 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#ifndef DBMS_BASIC_PLUGIN_HPP
-#define DBMS_BASIC_PLUGIN_HPP
+#ifndef DBMS_ABSTRACT_PLUGIN_HPP
+#define DBMS_ABSTRACT_PLUGIN_HPP
 
 #include <boost/config.hpp>
 #include <boost/application.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/variables_map.hpp>
+#include <boost/program_options.hpp>
 
 namespace nil {
     namespace dbms {
@@ -29,7 +28,7 @@ namespace nil {
             /*!
              * @brief
              */
-            struct BOOST_SYMBOL_VISIBLE basic {
+            struct BOOST_SYMBOL_VISIBLE abstract {
                 enum state {
                     registered,     ///< the plugin is constructed but doesn't do anything
                     initialized,    ///< the plugin has initialized any state required but is idle
@@ -37,7 +36,7 @@ namespace nil {
                     stopped         ///< the plugin is no longer running
                 };
 
-                virtual ~basic() {
+                virtual ~abstract() {
                 }
                 virtual state get_state() const = 0;
                 virtual const std::string &name() const = 0;

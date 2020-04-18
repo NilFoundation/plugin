@@ -21,7 +21,8 @@
 #include <boost/test/data/test_case.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <nil/dbms/plugin/plugin.hpp>
+#include <nil/dbms/plugin/abstract.hpp>
+#include <nil/dbms/plugin/program_options.hpp>
 
 BOOST_AUTO_TEST_SUITE(plugin_test_suite)
 
