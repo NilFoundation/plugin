@@ -22,6 +22,14 @@
 #include <nil/dbms/plugin/descriptor.hpp>
 
 namespace nil::dbms::plugin {
+    namespace detail {
+        template<typename>
+        struct is_tuple : std::false_type { };
+
+        template<typename... T>
+        struct is_tuple<std::tuple<T...>> : std::true_type { };
+
+    }    // namespace detail
     struct BOOST_SYMBOL_VISIBLE initializer {
         template<typename DescRange, typename OutputIterator>
         inline static void process(const DescRange &r, OutputIterator out) {
@@ -29,11 +37,28 @@ namespace nil::dbms::plugin {
         }
 
         template<typename DescIterator, typename OutputIterator>
-        inline static void process(DescIterator first, DescIterator last, OutputIterator out) {
+        inline static void process(
+            DescIterator first, DescIterator last,
+            typename std::enable_if<!detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
+                                    OutputIterator>::type out) {
             typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
 
             while (first != last) {
                 *out = boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")();
+                ++first;
+            }
+        }
+
+        template<typename DescIterator, typename OutputIterator>
+        inline static void process(
+            DescIterator first, DescIterator last,
+            typename std::enable_if<detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
+                                    OutputIterator>::type out) {
+            typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
+
+            while (first != last) {
+                *out = std::make_pair(std::move(*first),
+                                      boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")());
                 ++first;
             }
         }

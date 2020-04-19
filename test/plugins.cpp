@@ -22,7 +22,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include <nil/dbms/plugin/abstract.hpp>
-#include <nil/dbms/plugin/program_options.hpp>
+#include <nil/dbms/plugin/descriptor.hpp>
+#include <nil/dbms/plugin/initializer.hpp>
+#include <nil/dbms/plugin/loader.hpp>
 
 BOOST_AUTO_TEST_SUITE(plugin_test_suite)
 

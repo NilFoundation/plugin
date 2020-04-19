@@ -41,7 +41,7 @@ macro(define_plugin_test name)
                                TRUE>:BOOST_TEST_DYN_LINK>)
 endmacro()
 
-set(TESTS_NAMES "plugin")
+set(TESTS_NAMES "plugins")
 
 foreach(TEST_NAME ${TESTS_NAMES})
     define_plugin_test(${TEST_NAME})
