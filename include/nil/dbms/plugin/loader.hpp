@@ -31,13 +31,15 @@ namespace nil::dbms::plugin {
         template<typename DirectoryIterator, typename OutputIterator>
         inline static OutputIterator process(DirectoryIterator first, DirectoryIterator last, OutputIterator out) {
             while (first != last) {
-                boost::dll::shared_library lib(first->string(), boost::dll::load_mode::append_decorations);
+                boost::dll::shared_library lib(*first, boost::dll::load_mode::append_decorations);
 
                 lib.has("create_plugin") ? out++ = {*first++, lib} : ++first;
             }
 
             return out;
         }
+
+
     };
 }    // namespace nil::dbms::plugin
 
