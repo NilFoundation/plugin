@@ -21,26 +21,29 @@
 #include <nil/dbms/plugin/abstract.hpp>
 #include <nil/dbms/plugin/descriptor.hpp>
 
-namespace nil::dbms::plugin {
-    struct BOOST_SYMBOL_VISIBLE loader {
-        template<typename DirectoryRange, typename OutputIterator>
-        inline static OutputIterator process(const DirectoryRange &r, OutputIterator out) {
-            return process(r.begin(), r.end(), out);
-        }
+namespace nil {
+    namespace dbms {
+        namespace plugin {
+            struct BOOST_SYMBOL_VISIBLE loader {
+                template<typename DirectoryRange, typename OutputIterator>
+                inline static OutputIterator process(const DirectoryRange &r, OutputIterator out) {
+                    return process(r.begin(), r.end(), out);
+                }
 
-        template<typename DirectoryIterator, typename OutputIterator>
-        inline static OutputIterator process(DirectoryIterator first, DirectoryIterator last, OutputIterator out) {
-            while (first != last) {
-                boost::dll::shared_library lib(*first, boost::dll::load_mode::append_decorations);
+                template<typename DirectoryIterator, typename OutputIterator>
+                inline static OutputIterator process(DirectoryIterator first, DirectoryIterator last,
+                                                     OutputIterator out) {
+                    while (first != last) {
+                        boost::dll::shared_library lib(*first, boost::dll::load_mode::append_decorations);
 
-                lib.has("create_plugin") ? out++ = {*first++, lib} : ++first;
-            }
+                        lib.has("create_plugin") ? out++ = {*first++, lib} : ++first;
+                    }
 
-            return out;
-        }
-
-
-    };
-}    // namespace nil::dbms::plugin
+                    return out;
+                }
+            };
+        }    // namespace plugin
+    }        // namespace dbms
+}
 
 #endif    // DBMS_SCANNER_HPP

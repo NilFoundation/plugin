@@ -21,48 +21,55 @@
 #include <nil/dbms/plugin/abstract.hpp>
 #include <nil/dbms/plugin/descriptor.hpp>
 
-namespace nil::dbms::plugin {
-    namespace detail {
-        template<typename>
-        struct is_tuple : std::false_type { };
+namespace nil {
+    namespace dbms {
+        namespace plugin {
+            namespace detail {
+                template<typename>
+                struct is_tuple : std::false_type { };
 
-        template<typename... T>
-        struct is_tuple<std::tuple<T...>> : std::true_type { };
+                template<typename... T>
+                struct is_tuple<std::tuple<T...>> : std::true_type { };
 
-    }    // namespace detail
-    struct BOOST_SYMBOL_VISIBLE initializer {
-        template<typename DescRange, typename OutputIterator>
-        inline static void process(const DescRange &r, OutputIterator out) {
-            return process(r.begin(), r.end(), out);
-        }
+            }    // namespace detail
+            struct BOOST_SYMBOL_VISIBLE initializer {
+                template<typename DescRange, typename OutputIterator>
+                inline static void process(const DescRange &r, OutputIterator out) {
+                    return process(r.begin(), r.end(), out);
+                }
 
-        template<typename DescIterator, typename OutputIterator>
-        inline static void process(
-            DescIterator first, DescIterator last,
-            typename std::enable_if<!detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
-                                    OutputIterator>::type out) {
-            typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
+                template<typename DescIterator, typename OutputIterator>
+                inline static void
+                    process(DescIterator first, DescIterator last,
+                            typename std::enable_if<
+                                !detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
+                                OutputIterator>::type out) {
+                    typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
 
-            while (first != last) {
-                *out = boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")();
-                ++first;
-            }
-        }
+                    while (first != last) {
+                        *out = boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")();
+                        ++first;
+                    }
+                }
 
-        template<typename DescIterator, typename OutputIterator>
-        inline static void process(
-            DescIterator first, DescIterator last,
-            typename std::enable_if<detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
-                                    OutputIterator>::type out) {
-            typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
+                template<typename DescIterator, typename OutputIterator>
+                inline static void
+                    process(DescIterator first, DescIterator last,
+                            typename std::enable_if<
+                                detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
+                                OutputIterator>::type out) {
+                    typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
 
-            while (first != last) {
-                *out = std::make_pair(std::move(*first),
-                                      boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")());
-                ++first;
-            }
-        }
-    };
-}    // namespace nil::dbms::plugin
+                    while (first != last) {
+                        *out =
+                            std::make_pair(std::move(*first),
+                                           boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")());
+                        ++first;
+                    }
+                }
+            };
+        }    // namespace plugin
+    }        // namespace dbms
+}    // namespace nil
 
 #endif    // DBMS_LOADER_HPP
