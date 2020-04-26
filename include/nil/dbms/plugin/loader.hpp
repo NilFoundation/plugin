@@ -19,7 +19,6 @@
 #define DBMS_PLUGIN_LOADER_HPP
 
 #include <nil/dbms/plugin/abstract.hpp>
-#include <nil/dbms/plugin/descriptor.hpp>
 
 namespace nil {
     namespace dbms {
@@ -36,7 +35,11 @@ namespace nil {
                     while (first != last) {
                         boost::dll::shared_library lib(*first, boost::dll::load_mode::append_decorations);
 
-                        lib.has("create_plugin") ? out++ = {*first++, lib} : ++first;
+                        if (lib.has("create_plugin")) {
+                            out++ = lib;
+                        }
+
+                        ++first;
                     }
 
                     return out;
@@ -44,6 +47,6 @@ namespace nil {
             };
         }    // namespace plugin
     }        // namespace dbms
-}
+}    // namespace nil
 
 #endif    // DBMS_SCANNER_HPP

@@ -19,33 +19,26 @@
 #define DBMS_PLUGIN_IMPORTER_HPP
 
 #include <nil/dbms/plugin/abstract.hpp>
-#include <nil/dbms/plugin/descriptor.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
-            namespace detail {
-                template<typename>
-                struct is_tuple : std::false_type { };
-
-                template<typename... T>
-                struct is_tuple<std::tuple<T...>> : std::true_type { };
-
-            }    // namespace detail
             struct BOOST_SYMBOL_VISIBLE initializer {
                 template<typename DescRange, typename OutputIterator>
-                inline static void process(const DescRange &r, OutputIterator out) {
+                inline static OutputIterator process(const DescRange &r, OutputIterator out) {
                     return process(r.begin(), r.end(), out);
                 }
 
                 template<typename DescIterator, typename OutputIterator>
-                inline static void process(DescIterator first, DescIterator last, OutputIterator out) {
+                inline static OutputIterator process(DescIterator first, DescIterator last, OutputIterator out) {
                     typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
 
                     while (first != last) {
-                        *out = boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")();
+                        out++ = boost::dll::import_alias<pluginapi_create_t>(*first, "create_plugin")();
                         ++first;
                     }
+
+                    return out;
                 }
             };
         }    // namespace plugin
