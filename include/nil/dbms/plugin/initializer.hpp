@@ -39,31 +39,11 @@ namespace nil {
                 }
 
                 template<typename DescIterator, typename OutputIterator>
-                inline static void
-                    process(DescIterator first, DescIterator last,
-                            typename std::enable_if<
-                                !detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
-                                OutputIterator>::type out) {
+                inline static void process(DescIterator first, DescIterator last, OutputIterator out) {
                     typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
 
                     while (first != last) {
                         *out = boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")();
-                        ++first;
-                    }
-                }
-
-                template<typename DescIterator, typename OutputIterator>
-                inline static void
-                    process(DescIterator first, DescIterator last,
-                            typename std::enable_if<
-                                detail::is_tuple<typename std::iterator_traits<OutputIterator>::value_type>::value,
-                                OutputIterator>::type out) {
-                    typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
-
-                    while (first != last) {
-                        *out =
-                            std::make_pair(std::move(*first),
-                                           boost::dll::import_alias<pluginapi_create_t>(first->lib, "create_plugin")());
                         ++first;
                     }
                 }
