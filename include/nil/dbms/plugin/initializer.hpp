@@ -18,6 +18,8 @@
 #ifndef DBMS_PLUGIN_IMPORTER_HPP
 #define DBMS_PLUGIN_IMPORTER_HPP
 
+#include <boost/dll.hpp>
+
 #include <nil/dbms/plugin/abstract.hpp>
 
 namespace nil {
