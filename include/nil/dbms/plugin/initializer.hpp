@@ -36,7 +36,7 @@ namespace nil {
                     typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
 
                     while (first != last) {
-                        out++ = boost::dll::import_alias<pluginapi_create_t>(*first, "create_plugin")();
+                        *out++ = boost::dll::import_alias<pluginapi_create_t>(*first, "create_plugin")();
                         ++first;
                     }
 
