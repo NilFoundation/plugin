@@ -15,10 +15,8 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#ifndef DBMS_PLUGIN_IMPORTER_HPP
-#define DBMS_PLUGIN_IMPORTER_HPP
-
-#include <boost/dll.hpp>
+#ifndef DBMS_PLUGIN_INITIALIZER_HPP
+#define DBMS_PLUGIN_INITIALIZER_HPP
 
 #include <nil/dbms/plugin/abstract.hpp>
 
@@ -33,10 +31,8 @@ namespace nil {
 
                 template<typename DescIterator, typename OutputIterator>
                 inline static OutputIterator process(DescIterator first, DescIterator last, OutputIterator out) {
-                    typedef boost::shared_ptr<abstract>(pluginapi_create_t)();
-
                     while (first != last) {
-                        *out++ = boost::dll::import_alias<pluginapi_create_t>(*first, "create_plugin")();
+                        *out++ = boost::dll::import<abstract>(*first, "plugin");
                         ++first;
                     }
 

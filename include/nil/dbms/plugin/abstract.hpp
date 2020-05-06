@@ -20,6 +20,7 @@
 
 #include <boost/config.hpp>
 #include <boost/application.hpp>
+#include <boost/dll.hpp>
 #include <boost/program_options.hpp>
 
 namespace nil {
