@@ -24,21 +24,13 @@ namespace nil {
     namespace dbms {
         namespace plugin {
             struct BOOST_SYMBOL_VISIBLE initializer {
-                template<typename DescRange, typename OutputIterator>
-                inline static OutputIterator process(const DescRange &r, OutputIterator out) {
-                    return process(r.begin(), r.end(), out);
-                }
+                typedef boost::shared_ptr<abstract> result_type;
 
-                template<typename DescIterator, typename OutputIterator>
-                inline static OutputIterator process(DescIterator first, DescIterator last, OutputIterator out) {
-                    while (first != last) {
-                        *out++ = boost::dll::import<abstract>(*first, "plugin");
-                        ++first;
-                    }
-
-                    return out;
+                inline result_type operator()(boost::shared_ptr<boost::dll::shared_library> p) const {
+                    return boost::dll::import<abstract>(*p, "plugin");
                 }
             };
+            // namespace plugin
         }    // namespace plugin
     }        // namespace dbms
 }    // namespace nil
