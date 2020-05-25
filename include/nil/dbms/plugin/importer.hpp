@@ -15,15 +15,15 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#ifndef DBMS_PLUGIN_INITIALIZER_HPP
-#define DBMS_PLUGIN_INITIALIZER_HPP
+#ifndef DBMS_PLUGIN_IMPORTER_HPP
+#define DBMS_PLUGIN_IMPORTER_HPP
 
 #include <nil/dbms/plugin/abstract.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
-            struct BOOST_SYMBOL_VISIBLE initializer {
+            struct BOOST_SYMBOL_VISIBLE importer {
                 typedef boost::shared_ptr<abstract> result_type;
 
                 inline result_type operator()(boost::shared_ptr<boost::dll::shared_library> p) const {
