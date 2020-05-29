@@ -24,7 +24,7 @@ namespace nil {
     namespace dbms {
         struct BOOST_SYMBOL_VISIBLE configurable {
             virtual void set_options(boost::program_options::options_description &cli,
-                                             boost::program_options::options_description &cfg) const = 0;
+                                     boost::program_options::options_description &cfg) const = 0;
             virtual void initialize(boost::program_options::variables_map &options) = 0;
         };
     }    // namespace dbms
