@@ -23,31 +23,27 @@
 #include <boost/dll.hpp>
 #include <boost/program_options.hpp>
 
+#include <nil/dbms/plugin/configurable.hpp>
+#include <nil/dbms/plugin/initializable.hpp>
+
 namespace nil {
     namespace dbms {
         namespace plugin {
             /*!
              * @brief
              */
-            struct BOOST_SYMBOL_VISIBLE abstract {
-                enum state {
-                    registered,     ///< the plugin is constructed but doesn't do anything
-                    initialized,    ///< the plugin has initialized any state required but is idle
-                    started,        ///< the plugin is actively running
-                    stopped         ///< the plugin is no longer running
-                };
-
+            struct BOOST_SYMBOL_VISIBLE abstract : public configurable, initializable {
                 virtual ~abstract() {
                 }
                 virtual state get_state() const = 0;
                 virtual const std::string &name() const = 0;
                 virtual void set_program_options(boost::program_options::options_description &cli,
-                                                 boost::program_options::options_description &cfg) = 0;
+                                                 boost::program_options::options_description &cfg) override = 0;
                 virtual void initialize(boost::application::global_context_ptr ctx,
-                                        const boost::program_options::variables_map &options) = 0;
-                virtual void handle_sighup() = 0;
-                virtual void startup() = 0;
-                virtual void shutdown() = 0;
+                                        const boost::program_options::variables_map &options) override = 0;
+                virtual void handle_sighup() override = 0;
+                virtual void startup() override = 0;
+                virtual void shutdown() override = 0;
             };
         }    // namespace plugin
     }        // namespace dbms
