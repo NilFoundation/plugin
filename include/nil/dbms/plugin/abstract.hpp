@@ -32,20 +32,28 @@ namespace nil {
             /*!
              * @brief
              */
-            struct BOOST_SYMBOL_VISIBLE abstract : public configurable, initializable {
+            struct BOOST_SYMBOL_VISIBLE abstract : public configurable<boost::program_options::options_description,
+                                                                       boost::program_options::variables_map>,
+                                                   initializable {
+                typedef configurable<boost::program_options::options_description, boost::program_options::variables_map>
+                    policy_type;
+
+                typedef typename policy_type::options_type options_type;
+                typedef typename policy_type::configuration_type configuration_type;
+
                 virtual ~abstract() {
                 }
                 virtual state get_state() const override = 0;
                 virtual const char *name() const = 0;
-                virtual void set_options(boost::program_options::options_description &cli,
-                                         boost::program_options::options_description &cfg) const override = 0;
-                virtual void initialize(boost::program_options::variables_map &options) override = 0;
+                virtual void set_options(options_type &cli, options_type &cfg) const override = 0;
+                virtual void initialize(configuration_type &options) override = 0;
                 virtual void handle_sighup() override = 0;
                 virtual void startup() override = 0;
                 virtual void shutdown() override = 0;
             };
         }    // namespace plugin
-    }        // namespace dbms
+
+    }    // namespace dbms
 }    // namespace nil
 
 #endif    // DBMS_PLUGIN_HPP
