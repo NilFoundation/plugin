@@ -23,9 +23,9 @@ namespace nil {
         struct BOOST_SYMBOL_VISIBLE initializable {
             enum state {
                 registered,     ///< the plugin is constructed but doesn't do anything
-                    initialized,    ///< the plugin has initialized any state required but is idle
-                    started,        ///< the plugin is actively running
-                    stopped         ///< the plugin is no longer running
+                initialized,    ///< the plugin has initialized any state required but is idle
+                started,        ///< the plugin is actively running
+                stopped         ///< the plugin is no longer running
             };
 
             virtual state get_state() const = 0;
