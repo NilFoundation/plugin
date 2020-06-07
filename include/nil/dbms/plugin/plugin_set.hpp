@@ -15,24 +15,29 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#ifndef DBMS_PLUGIN_IMPORTER_HPP
-#define DBMS_PLUGIN_IMPORTER_HPP
+#ifndef DBMS_PLUGIN_CONTAINER_HPP
+#define DBMS_PLUGIN_CONTAINER_HPP
 
-#include <nil/dbms/plugin/plugin.hpp>
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index/composite_key.hpp>
+
+#include <nil/dbms/plugin/descriptor.hpp>
+
+#include <nil/dbms/plugin/detail/extractors.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
-            struct BOOST_SYMBOL_VISIBLE importer {
-                typedef boost::shared_ptr<plugin> result_type;
-
-                inline result_type operator()(boost::shared_ptr<boost::dll::shared_library> p) const {
-                    return boost::dll::import<plugin>(*p, "plugin");
-                }
-            };
-            // namespace plugin
+            template<typename PluginType>
+            using plugin_set = boost::multi_index::multi_index_container<
+                descriptor<PluginType>,
+                boost::multi_index::indexed_by<
+                    boost::multi_index::ordered_unique<detail::id_extractor<descriptor<PluginType>>>,
+                    boost::multi_index::ordered_non_unique<detail::name_extractor<descriptor<PluginType>>>>>;
         }    // namespace plugin
     }        // namespace dbms
 }    // namespace nil
 
-#endif    // DBMS_LOADER_HPP
+#endif    // DBMS_SCANNER_HPP

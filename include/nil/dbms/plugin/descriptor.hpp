@@ -15,34 +15,23 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#ifndef DBMS_ABSTRACT_PLUGIN_HPP
-#define DBMS_ABSTRACT_PLUGIN_HPP
+#ifndef DBMS_PLUGIN_DESCRIPTOR_HPP
+#define DBMS_PLUGIN_DESCRIPTOR_HPP
 
 #include <boost/config.hpp>
-#include <boost/application.hpp>
 #include <boost/dll.hpp>
-#include <boost/program_options.hpp>
-
-#include <nil/dbms/plugin/configurable.hpp>
-#include <nil/dbms/plugin/initializable.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
-            /*!
-             * @brief
-             */
-            struct BOOST_SYMBOL_VISIBLE abstract : public configurable, initializable {
-                virtual ~abstract() {
-                }
-                virtual state get_state() const override = 0;
-                virtual const std::string &name() const = 0;
-                virtual void set_options(boost::program_options::options_description &cli,
-                                         boost::program_options::options_description &cfg) const override = 0;
-                virtual void initialize(boost::program_options::variables_map &options) override = 0;
-                virtual void handle_sighup() override = 0;
-                virtual void startup() override = 0;
-                virtual void shutdown() override = 0;
+            template<typename PluginType>
+            struct BOOST_SYMBOL_VISIBLE descriptor {
+                typedef PluginType plugin_type;
+
+                typedef boost::dll::shared_library library_type;
+
+                boost::shared_ptr<library_type> lib;
+                boost::shared_ptr<plugin_type> plugin;
             };
         }    // namespace plugin
     }        // namespace dbms

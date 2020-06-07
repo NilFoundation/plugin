@@ -21,7 +21,7 @@
 #include <boost/test/data/test_case.hpp>
 #include <boost/test/unit_test.hpp>
 
-#include <nil/dbms/plugin/abstract.hpp>
+#include <nil/dbms/plugin/plugin.hpp>
 #include <nil/dbms/plugin/descriptor.hpp>
 #include <nil/dbms/plugin/importer.hpp>
 #include <nil/dbms/plugin/loader.hpp>
