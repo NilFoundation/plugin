@@ -46,7 +46,7 @@ namespace nil {
 
                 virtual ~plugin() {
                 }
-                virtual state_type state() const override = 0;
+                virtual state_type state() const = 0;
                 virtual id_type id() const = 0;
                 virtual name_type name() const = 0;
 
