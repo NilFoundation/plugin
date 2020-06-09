@@ -24,21 +24,6 @@
 namespace nil {
     namespace dbms {
         namespace plugin {
-            struct BOOST_SYMBOL_VISIBLE symbol_checker {
-                typedef boost::shared_ptr<boost::dll::shared_library> result_type;
-
-                inline result_type operator()(const boost::filesystem::path &p) const {
-                    boost::shared_ptr<boost::dll::shared_library> lib =
-                        boost::make_shared<boost::dll::shared_library>(p, boost::dll::load_mode::append_decorations);
-
-                    if (lib->has("create_plugin")) {
-                        return lib;
-                    } else {
-                        return boost::make_shared<boost::dll::shared_library>();
-                    }
-                }
-            };
-
             template<typename PluginType, typename PluginContainer = plugin_set<PluginType>>
             struct BOOST_SYMBOL_VISIBLE loader {
                 typedef PluginType plugin_type;

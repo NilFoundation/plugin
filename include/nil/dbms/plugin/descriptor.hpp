@@ -27,6 +27,8 @@ namespace nil {
             template<typename PluginType>
             struct BOOST_SYMBOL_VISIBLE descriptor {
                 typedef PluginType plugin_type;
+                typedef typename plugin_type::id_type id_type;
+                typedef typename plugin_type::name_type name_type;
 
                 typedef boost::dll::shared_library library_type;
 

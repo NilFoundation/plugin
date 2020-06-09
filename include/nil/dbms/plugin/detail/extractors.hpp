@@ -45,9 +45,22 @@ namespace nil {
                         return e.plugin->name();
                     }
                 };
+
+                template<typename DescriptorType>
+                struct path_extractor {
+                    typedef DescriptorType descriptor_type;
+                    typedef typename descriptor_type::name_type name_type;
+
+                    typedef typename std::result_of<decltype (&descriptor_type::library_type::location)(
+                        typename descriptor_type::library_type)>::type result_type;
+
+                    const result_type &operator()(const descriptor_type &e) const {
+                        return e.plugin->lib->path();
+                    }
+                };
             }    // namespace detail
-        }    // namespace aspects
-    }        // namespace dbms
+        }        // namespace plugin
+    }            // namespace dbms
 }    // namespace nil
 
 #endif    // DBMS_PATH_HPP
