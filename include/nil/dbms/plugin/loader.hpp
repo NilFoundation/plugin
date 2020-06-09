@@ -18,13 +18,12 @@
 #ifndef DBMS_PLUGIN_LOADER_HPP
 #define DBMS_PLUGIN_LOADER_HPP
 
-#include <nil/dbms/plugin/plugin.hpp>
-#include <nil/dbms/plugin/plugin_set.hpp>
+#include <nil/dbms/plugin/container.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
-            template<typename PluginType, typename PluginContainer = plugin_set<PluginType>>
+            template<typename PluginType, typename PluginContainer>
             struct BOOST_SYMBOL_VISIBLE loader {
                 typedef PluginType plugin_type;
                 typedef PluginContainer container_type;
@@ -32,6 +31,9 @@ namespace nil {
                 typedef typename container_type::value_type descriptor_type;
 
                 loader(container_type &p) : p(p) {
+                }
+
+                virtual ~loader() {
                 }
 
                 virtual void load(typename container_type::value_type &plugin) = 0;

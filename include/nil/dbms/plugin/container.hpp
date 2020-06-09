@@ -31,11 +31,12 @@ namespace nil {
     namespace dbms {
         namespace plugin {
             template<typename PluginType>
-            using plugin_set = boost::multi_index::multi_index_container<
+            using container = boost::multi_index::multi_index_container<
                 descriptor<PluginType>,
                 boost::multi_index::indexed_by<
                     boost::multi_index::ordered_unique<detail::id_extractor<descriptor<PluginType>>>,
-                    boost::multi_index::ordered_non_unique<detail::name_extractor<descriptor<PluginType>>>>>;
+                    boost::multi_index::ordered_non_unique<detail::name_extractor<descriptor<PluginType>>>,
+                    boost::multi_index::ordered_unique<detail::path_extractor<descriptor<PluginType>>>>>;
         }    // namespace plugin
     }        // namespace dbms
 }    // namespace nil

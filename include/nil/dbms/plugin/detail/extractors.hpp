@@ -18,12 +18,14 @@
 #ifndef DBMS_PLUGIN_DETAIL_EXTRACTORS_HPP
 #define DBMS_PLUGIN_DETAIL_EXTRACTORS_HPP
 
+#include <boost/config.hpp>
+
 namespace nil {
     namespace dbms {
         namespace plugin {
             namespace detail {
                 template<typename DescriptorType>
-                struct id_extractor {
+                struct BOOST_SYMBOL_VISIBLE id_extractor {
                     typedef DescriptorType descriptor_type;
                     typedef typename descriptor_type::id_type id_type;
 
@@ -35,7 +37,7 @@ namespace nil {
                 };
 
                 template<typename DescriptorType>
-                struct name_extractor {
+                struct BOOST_SYMBOL_VISIBLE name_extractor {
                     typedef DescriptorType descriptor_type;
                     typedef typename descriptor_type::name_type name_type;
 
@@ -47,12 +49,11 @@ namespace nil {
                 };
 
                 template<typename DescriptorType>
-                struct path_extractor {
+                struct BOOST_SYMBOL_VISIBLE path_extractor {
                     typedef DescriptorType descriptor_type;
                     typedef typename descriptor_type::name_type name_type;
 
-                    typedef typename std::result_of<decltype (&descriptor_type::library_type::location)(
-                        typename descriptor_type::library_type)>::type result_type;
+                    typedef decltype(std::declval<typename descriptor_type::library_type>().location()) result_type;
 
                     const result_type &operator()(const descriptor_type &e) const {
                         return e.plugin->lib->path();
