@@ -28,7 +28,7 @@ namespace nil {
                 stopped         ///< the plugin is no longer running
             };
 
-            virtual state_type get_state() const = 0;
+            virtual state_type state() const = 0;
 
             virtual void handle_sighup() = 0;
 
