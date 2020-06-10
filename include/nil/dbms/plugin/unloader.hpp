@@ -15,8 +15,8 @@
 // <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 //----------------------------------------------------------------------------
 
-#ifndef DBMS_PLUGIN_LOADER_HPP
-#define DBMS_PLUGIN_LOADER_HPP
+#ifndef DBMS_PLUGIN_UNLOADER_HPP
+#define DBMS_PLUGIN_UNLOADER_HPP
 
 #include <nil/dbms/plugin/container.hpp>
 
@@ -24,19 +24,19 @@ namespace nil {
     namespace dbms {
         namespace plugin {
             template<typename PluginType, typename PluginContainer>
-            struct BOOST_SYMBOL_VISIBLE loader {
+            struct BOOST_SYMBOL_VISIBLE unloader {
                 typedef PluginType plugin_type;
                 typedef PluginContainer container_type;
 
                 typedef typename container_type::value_type descriptor_type;
 
-                loader(container_type &p) : p(p) {
+                unloader(container_type &p) : p(p) {
                 }
 
-                virtual ~loader() {
+                virtual ~unloader() {
                 }
 
-                inline virtual descriptor_type &load(const boost::filesystem::path &path) = 0;
+                inline virtual void unload(const descriptor_type &d) = 0;
 
             protected:
                 container_type &p;
