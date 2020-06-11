@@ -18,28 +18,42 @@
 #ifndef DBMS_PLUGIN_UNLOADER_HPP
 #define DBMS_PLUGIN_UNLOADER_HPP
 
-#include <nil/dbms/plugin/container.hpp>
+#include <nil/dbms/plugin/processor.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
             template<typename PluginType, typename PluginContainer>
-            struct BOOST_SYMBOL_VISIBLE unloader {
-                typedef PluginType plugin_type;
-                typedef PluginContainer container_type;
+            class BOOST_SYMBOL_VISIBLE unloader : public processor<PluginType, PluginContainer> {
+                typedef processor<PluginType, PluginContainer> policy_type;
+
+            public:
+                typedef typename policy_type::plugin_type plugin_type;
+                typedef typename policy_type::container_type container_type;
 
                 typedef typename container_type::value_type descriptor_type;
 
-                unloader(container_type &p) : p(p) {
+                unloader(container_type &p) : processor(p) {
                 }
 
-                virtual ~unloader() {
+                inline virtual typename container_type::iterator unload(const boost::filesystem::path &path) {
+
                 }
 
-                inline virtual void unload(const descriptor_type &d) = 0;
+                template<typename InputIterator>
+                inline typename container_type::iterator unload(InputIterator first, InputIterator last) {
+                    typename container_type::iterator result = this->p.end();
+                    while (first != last) {
+                        result = unload(*first);
+                        ++first;
+                    }
+                    return result;
+                }
 
-            protected:
-                container_type &p;
+                template<typename SinglePassRange>
+                inline typename container_type::iterator unload(const SinglePassRange &r) {
+                    return unload(r.begin(), r.end());
+                }
             };
         }    // namespace plugin
     }        // namespace dbms

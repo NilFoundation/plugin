@@ -18,28 +18,54 @@
 #ifndef DBMS_PLUGIN_LOADER_HPP
 #define DBMS_PLUGIN_LOADER_HPP
 
-#include <nil/dbms/plugin/container.hpp>
+#include <nil/dbms/plugin/processor.hpp>
 
 namespace nil {
     namespace dbms {
         namespace plugin {
             template<typename PluginType, typename PluginContainer>
-            struct BOOST_SYMBOL_VISIBLE loader {
-                typedef PluginType plugin_type;
-                typedef PluginContainer container_type;
+            class BOOST_SYMBOL_VISIBLE loader : public processor<PluginType, PluginContainer> {
+                typedef processor<PluginType, PluginContainer> policy_type;
+
+            public:
+                typedef typename policy_type::plugin_type plugin_type;
+                typedef typename policy_type::container_type container_type;
 
                 typedef typename container_type::value_type descriptor_type;
 
-                loader(container_type &p) : p(p) {
+                loader(container_type &p) : processor(p) {
                 }
 
-                virtual ~loader() {
+                inline virtual typename container_type::iterator load(const boost::filesystem::path &path) {
+                    if (boost::filesystem::is_regular_file(path)) {
+                        boost::shared_ptr<boost::dll::shared_library> lib =
+                            boost::make_shared<boost::dll::shared_library>(path,
+                                                                           boost::dll::load_mode::append_decorations);
+                        boost::shared_ptr<plugin_type> plug = boost::dll::import<plugin_type>(*lib, "plugin");
+                        std::pair<typename container_type::iterator, bool> val = this->p.emplace_back(lib, plug);
+                        if (val.second) {
+                            plug->startup();
+                            return val.first;
+                        } else {
+                            return this->p.end();
+                        }
+                    }
                 }
 
-                inline virtual descriptor_type &load(const boost::filesystem::path &path) = 0;
+                template<typename InputIterator>
+                inline typename container_type::iterator load(InputIterator first, InputIterator last) {
+                    typename container_type::iterator result = this->p.end();
+                    while (first != last) {
+                        result = load(*first);
+                        ++first;
+                    }
+                    return result;
+                }
 
-            protected:
-                container_type &p;
+                template<typename SinglePassRange>
+                inline typename container_type::iterator load(const SinglePassRange &r) {
+                    return load(r.begin(), r.end());
+                }
             };
         }    // namespace plugin
     }        // namespace dbms
