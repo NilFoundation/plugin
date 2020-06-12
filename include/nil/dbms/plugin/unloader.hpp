@@ -33,11 +33,10 @@ namespace nil {
 
                 typedef typename container_type::value_type descriptor_type;
 
-                unloader(container_type &p) : processor(p) {
+                explicit unloader(container_type &p) : processor<PluginType, PluginContainer>(p) {
                 }
 
                 inline virtual typename container_type::iterator unload(const boost::filesystem::path &path) {
-
                 }
 
                 template<typename InputIterator>

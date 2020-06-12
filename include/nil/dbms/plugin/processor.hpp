@@ -30,7 +30,7 @@ namespace nil {
 
                 typedef typename container_type::value_type descriptor_type;
 
-                processor(container_type &p) : p(p) {
+                explicit processor(container_type &p) : p(p) {
                 }
 
                 virtual ~processor() {

@@ -33,7 +33,7 @@ namespace nil {
 
                 typedef typename container_type::value_type descriptor_type;
 
-                loader(container_type &p) : processor(p) {
+                explicit loader(container_type &p) : processor<PluginType, PluginContainer>(p) {
                 }
 
                 inline virtual typename container_type::iterator load(const boost::filesystem::path &path) {
