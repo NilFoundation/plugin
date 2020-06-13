@@ -23,8 +23,10 @@
 #include <boost/dll.hpp>
 #include <boost/program_options.hpp>
 
-#include <nil/dbms/plugin/configurable.hpp>
-#include <nil/dbms/plugin/initializable.hpp>
+#include <nil/module/configurable.hpp>
+#include <nil/module/initializable.hpp>
+#include <nil/module/identifiable.hpp>
+#include <nil/module/nameable.hpp>
 
 namespace nil {
     namespace dbms {
@@ -32,11 +34,15 @@ namespace nil {
             /*!
              * @brief
              */
-            struct BOOST_SYMBOL_VISIBLE plugin : public configurable<boost::program_options::options_description,
-                                                                     boost::program_options::variables_map>,
-                                                 public initializable {
-                typedef uint32_t id_type;
-                typedef const char *name_type;
+            struct BOOST_SYMBOL_VISIBLE plugin
+                : public module::configurable<boost::program_options::options_description,
+                                              boost::program_options::variables_map>,
+                  public module::initializable,
+                  public module::nameable<const char *>,
+                  public module::identifiable<uint32_t> {
+
+                typedef typename module::identifiable<uint32_t>::id_type id_type;
+                typedef typename module::nameable<const char *>::name_type name_type;
 
                 typedef configurable<boost::program_options::options_description, boost::program_options::variables_map>
                     policy_type;
@@ -47,8 +53,8 @@ namespace nil {
                 virtual ~plugin() {
                 }
                 virtual state_type state() const override = 0;
-                virtual id_type id() const = 0;
-                virtual name_type name() const = 0;
+                virtual id_type id() const override = 0;
+                virtual name_type name() const override = 0;
 
                 virtual void set_options(options_type &cli, options_type &cfg) const override = 0;
                 virtual void initialize(configuration_type &options) override = 0;
