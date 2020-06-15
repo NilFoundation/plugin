@@ -75,7 +75,7 @@ target_link_libraries(${CMAKE_WORKSPACE_NAME}_${CURRENT_PROJECT_NAME} INTERFACE
 
                       boost::application
 
-                      nil::module
+                      module
 
                       ${Boost_LIBRARIES})
 
