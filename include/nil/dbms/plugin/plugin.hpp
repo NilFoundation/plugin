@@ -47,7 +47,7 @@ namespace nil {
                 typedef configurable<boost::program_options::options_description, boost::program_options::variables_map>
                     policy_type;
 
-                typedef typename policy_type::options_type options_type;
+                typedef typename policy_type::options_types options_type;
                 typedef typename policy_type::configuration_type configuration_type;
 
                 virtual ~plugin() {
