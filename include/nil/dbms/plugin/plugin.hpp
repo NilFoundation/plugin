@@ -28,6 +28,9 @@
 #include <nil/module/identifiable.hpp>
 #include <nil/module/nameable.hpp>
 
+#include <nil/plugin/options_description.hpp>
+#include <nil/plugin/variables_map.hpp>
+
 namespace nil {
     namespace dbms {
         namespace plugin {
