@@ -28,8 +28,8 @@
 #include <nil/module/identifiable.hpp>
 #include <nil/module/nameable.hpp>
 
-#include <nil/plugin/options_description.hpp>
-#include <nil/plugin/variables_map.hpp>
+#include <nil/dbms/plugin/options_description.hpp>
+#include <nil/dbms/plugin/variables_map.hpp>
 
 namespace nil {
     namespace dbms {
@@ -37,29 +37,32 @@ namespace nil {
             /*!
              * @brief
              */
-            struct BOOST_SYMBOL_VISIBLE plugin
-                : public module::configurable<boost::program_options::options_description,
-                                              boost::program_options::variables_map>,
+            class BOOST_SYMBOL_VISIBLE basic
+                : public module::configurable<variables_map, cli_options_description, cfg_options_description>,
                   public module::initializable,
                   public module::nameable<const char *>,
                   public module::identifiable<uint32_t> {
+                typedef module::configurable<variables_map, cli_options_description, cfg_options_description>
+                    policy_type;
 
+            public:
                 typedef typename module::identifiable<uint32_t>::id_type id_type;
                 typedef typename module::nameable<const char *>::name_type name_type;
-
-                typedef configurable<boost::program_options::options_description, boost::program_options::variables_map>
-                    policy_type;
 
                 typedef typename policy_type::options_types options_type;
                 typedef typename policy_type::configuration_type configuration_type;
 
-                virtual ~plugin() {
+                typedef typename std::tuple_element<0, options_type>::type cli_options_type;
+                typedef typename std::tuple_element<1, options_type>::type cfg_options_type;
+
+                virtual ~basic() {
                 }
                 virtual state_type state() const override = 0;
                 virtual id_type id() const override = 0;
                 virtual name_type name() const override = 0;
 
-                virtual void set_options(options_type &cli, options_type &cfg) const override = 0;
+                virtual void set_options(cli_options_type &cli) const override = 0;
+                virtual void set_options(cfg_options_type &cfg) const override = 0;
                 virtual void initialize(configuration_type &options) override = 0;
 
                 virtual void handle_sighup() override = 0;

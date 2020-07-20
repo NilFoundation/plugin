@@ -24,10 +24,10 @@ namespace nil {
     namespace dbms {
         namespace plugin {
             struct BOOST_SYMBOL_VISIBLE importer {
-                typedef boost::shared_ptr<plugin> result_type;
+                typedef boost::shared_ptr<basic> result_type;
 
                 inline result_type operator()(boost::shared_ptr<boost::dll::shared_library> p) const {
-                    return boost::dll::import<plugin>(*p, "plugin");
+                    return boost::dll::import<basic>(*p, "plugin");
                 }
             };
             // namespace plugin
