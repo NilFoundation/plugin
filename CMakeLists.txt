@@ -15,7 +15,7 @@
 # <https://github.com/NilFoundation/plugin/blob/master/LICENSE_1_0.txt>.
 #----------------------------------------------------------------------------
 
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 2.8.12)
 
 cmake_policy(SET CMP0042 NEW)
 cmake_policy(SET CMP0028 NEW)
